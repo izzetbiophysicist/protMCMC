@@ -51,10 +51,10 @@ def insert_mask(sequence, position, mask="<mask>"):
     Returns:
     - str or list: The sequence with the mask replacing the character at the specified position.
     """
-
+    
     if not (0 <= position < len(sequence)):
         raise ValueError("Position is out of bounds.")
-
+    
     if isinstance(sequence, str):
         return sequence[:position] + mask + sequence[position + 1:]
     elif isinstance(sequence, list):
@@ -64,9 +64,9 @@ def insert_mask(sequence, position, mask="<mask>"):
 
 def complete_mask(input_sequence, posi, temperature=1.0):
     # Standard amino acids
-    standard_aa = [alphabet.get_idx(aa) for aa in ['A', 'R', 'N', 'D', 'C', 'Q',
-                                                   'E', 'G', 'H', 'I', 'L', 'K',
-                                                   'M', 'F', 'P', 'S', 'T', 'W',
+    standard_aa = [alphabet.get_idx(aa) for aa in ['A', 'R', 'N', 'D', 'C', 'Q', 
+                                                   'E', 'G', 'H', 'I', 'L', 'K', 
+                                                   'M', 'F', 'P', 'S', 'T', 'W', 
                                                    'Y', 'V']]
 
     # Insert <mask> at the desired position
@@ -98,10 +98,8 @@ def complete_mask(input_sequence, posi, temperature=1.0):
     predicted_residue = alphabet.get_tok(predicted_token.item())
 
     print(f"ESM Mutation at position {posi}: {predicted_residue}")
-
+    
     return predicted_residue
-
-
 
 
 # Define the optimization class
@@ -111,7 +109,7 @@ class protMCMC:
         self.scores = []  # List to store the scores (or likelihoods) of each pose
         self.sequences = []  # List to store the sequences of each pose
 
-    def mc_optimize(self, locked_positions, n_iter=100, temp=1.0,  use_esm=False,
+    def mc_optimize(self, locked_positions, n_iter=100, temp=1.0,  use_esm=False, 
                     fitness_function=None, output_path='output.csv', **fitness_kwargs):
         # Extract sequence from the starting pose
         sequence = self.starting_pose.sequence()
@@ -139,11 +137,11 @@ class protMCMC:
                     current_residue = self.starting_pose.residue(posi).name1()
 
                     # Sample a new residue that's different from the current one
-                    mutated_residue = random.choice(['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I',
+                    mutated_residue = random.choice(['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 
                                                       'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V'])
                     while mutated_residue == current_residue:
                         print(f"Resampling for position {posi} because {mutated_residue} is the same as current residue {current_residue}")
-                        mutated_residue = random.choice(['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I',
+                        mutated_residue = random.choice(['A', 'R', 'N', 'D', 'C', 'Q', 'E', 'G', 'H', 'I', 
                                                           'L', 'K', 'M', 'F', 'P', 'S', 'T', 'W', 'Y', 'V'])
 
                 print(f"Selected position {posi}, Mutated residue: {mutated_residue} (Current: {self.starting_pose.residue(posi).name1()})")
