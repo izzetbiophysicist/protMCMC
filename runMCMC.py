@@ -35,7 +35,7 @@ import random
 
     # Use partial to preset some arguments for the fitness function
     # fitness_function = partial(your_fitness_function, arg1=value1, arg2=value2)
-
+    
     # Instantiate your optimization class
 
 my_pose= pose_from_pdb('2lzt.pdb')
@@ -56,6 +56,5 @@ optimizer.mc_optimize(
         output_path='output.csv',  # Specify your output CSV file path
     use_esm=True)
 #print(f"Best score: {best_score}")
-
 
 
